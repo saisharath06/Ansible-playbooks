@@ -6,6 +6,7 @@
   tasks: 
      - name: Install Java on Host Machines
        action: yum pkg=java-1.8.0-openjdk amazon-corretto state=present
+       ignore_errors: yes
 
      - name: Install python on Host Machines
        action: yum pkg=python3 state=present
