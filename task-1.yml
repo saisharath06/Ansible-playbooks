@@ -5,7 +5,7 @@
   connection: ssh 
   tasks: 
      - name: Install Java on Host Machines
-       action: yum pkg=openjdk-1.8.0-jdk amazon-corretto state=present
+       action: yum pkg=java-1.8.0-openjdk amazon-corretto state=present
 
      - name: Install python on Host Machines
        action: yum pkg=python3 state=present
