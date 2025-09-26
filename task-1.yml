@@ -4,7 +4,6 @@
   become: true
   connection: ssh 
   tasks: 
-
      - name: Install Java on Host Machines
        action: yum pkg=openjdk-1.8.0-jdk amazon-corretto state=present
 
