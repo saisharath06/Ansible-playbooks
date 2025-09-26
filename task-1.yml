@@ -5,7 +5,7 @@
   connection: ssh
   tasks:
      - name: Install java on Host Machines
-       action: yum pkg=java-17-openjdk state=present
+       action: yum pkg=java-1.8.0-openjdk state=present
        ignore_errors: yes
  
      - name: Install python on Host Machines
