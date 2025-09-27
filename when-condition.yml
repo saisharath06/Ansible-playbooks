@@ -1,5 +1,5 @@
 - name: Install packages conditionally
-  hosts: all
+  hosts: webservers
   become: yes
   tasks:
 
@@ -34,3 +34,4 @@
       apt:
         name: python3
         state: present
+      when: python_check.rc !=0
