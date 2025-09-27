@@ -1,30 +1,27 @@
 ---
 - hosts: webservers
   user: ansible
-  become: yes
+  become: true
   connection: ssh
- 
-  vars:
-    java_package: java-17-amazon-corretto-devel
-    jenkins_repo_url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
-    jenkins_key_url: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
  
   tasks:
     - name: Install OpenJDK 17
-      dnf:
-        name: "{{ java_package }}"
+      yum:
+        name: java-17-amazon-corretto.x86_64
         state: present
  
-    - name: Download Jenkins repository file
+    - name: Add Jenkins repository
       get_url:
-        url: "{{ jenkins_repo_url }}"
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
         dest: /etc/yum.repos.d/jenkins.repo
  
     - name: Import Jenkins GPG key
-      shell: rpm --import "{{ jenkins_key_url }}"
+      rpm_key:
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+        state: present
  
     - name: Install Jenkins
-      dnf:
+      yum:
         name: jenkins
         state: present
  
@@ -33,18 +30,17 @@
         name: jenkins
         state: started
  
-    - name: Enable Jenkins service
+    - name: Enable Jenkins to start on boot
       systemd:
         name: jenkins
         enabled: true
  
-    - name: Wait for Jenkins port 8080 to be available
+    - name: Wait for Jenkins to be available on port 8080
       wait_for:
         port: 8080
         delay: 30
-        state: started
  
-    - name: Get Jenkins initial admin password
+    - name: Retrieve Jenkins initial admin password
       shell: cat /var/lib/jenkins/secrets/initialAdminPassword
       register: jenkinspass
  
