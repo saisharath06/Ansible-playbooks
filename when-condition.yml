@@ -1,0 +1,36 @@
+- name: Install packages conditionally
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Check if Git is installed
+      command: which git
+      register: git_check
+      ignore_errors: yes
+
+    - name: Install Git if not present
+      apt:
+        name: git
+        state: present
+      when: git_check.rc != 0
+
+    - name: Check if Java is installed
+      command: which java
+      register: java_check
+      ignore_errors: yes
+
+    - name: Install Java if not present
+      apt:
+        name: java-17-amazon-corretto-devel
+        state: present
+      when: java_check.rc != 0
+
+    - name: Check if Python is installed
+      command: which python3
+      register: python_check
+      ignore_errors: yes
+
+    - name: Install Python if not present
+      apt:
+        name: python3
+        state: present
